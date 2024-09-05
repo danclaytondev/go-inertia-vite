@@ -14,7 +14,7 @@ $ pnpm dev
 ```
 Vite should start running at `http://localhost:5173`. If this is running at another address (e.g. because you've configured it to), you'll need to update the Go code that generates the Vite script tags.
 
-Then you can start the Go server:
+Then you can start the Go server **in a second terminal**:
 ```bash
 $ go run main.go -dev
 ```
