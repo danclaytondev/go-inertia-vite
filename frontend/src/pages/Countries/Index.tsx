@@ -2,7 +2,7 @@
 import Layout from "../../components/Layout";
 
 type Props = {
-	users: string[];
+	countries: string[];
 };
 
 export default function Home(props: Props) {
@@ -10,8 +10,8 @@ export default function Home(props: Props) {
 		<Layout>
 			<div className="py-6">
 				<ul>
-					{props.users.map((u) => (
-						<li>{u}</li>
+					{props.countries.map((c) => (
+						<li>{c}</li>
 					))}
 				</ul>
 			</div>

@@ -1,18 +1,22 @@
 package main
 
 import (
+	"database/sql"
 	"flag"
 	"fmt"
 	"io/fs"
+	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/olivere/vite"
 	inertia "github.com/romsar/gonertia"
+	_ "modernc.org/sqlite"
 )
 
 var i *inertia.Inertia
+var db *sql.DB
 
 func main() {
 	var (
@@ -45,12 +49,18 @@ func main() {
 	}
 
 	endpoints := map[string]http.HandlerFunc{
-		"/{$}":   homeHandler,
-		"/users": usersHandler,
+		"/{$}":       homeHandler,
+		"/countries": usersHandler,
 	}
 
 	for endpoint, f := range endpoints {
 		mux.Handle(endpoint, i.Middleware(http.HandlerFunc(f)))
+	}
+
+	// Open database
+	db, err = sql.Open("sqlite", "countries.sqlite")
+	if err != nil {
+		panic(err)
 	}
 
 	// Start a listener.
@@ -70,11 +80,32 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func usersHandler(w http.ResponseWriter, r *http.Request) {
-	time.Sleep(300 * time.Millisecond)
-	err := i.Render(w, r, "Users/Index", inertia.Props{
-		"users": []string{"Dan", "Mark"},
-	})
 
+	rows, err := db.Query("SELECT name FROM countries order by random() limit 5")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	countries := make([]string, 5)
+
+	index := 0
+
+	for rows.Next() {
+		var name string
+		if err := rows.Scan(&name); err != nil {
+			log.Fatal(err)
+		}
+		countries[index] = name
+		index = index + 1
+	}
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	err = i.Render(w, r, "Countries/Index", inertia.Props{
+		"countries": countries,
+	})
 	if err != nil {
 		panic(err)
 	}

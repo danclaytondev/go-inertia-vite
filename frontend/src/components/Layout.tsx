@@ -13,10 +13,10 @@ export default function Layout(props: { children: React.ReactNode }) {
 							Home
 						</Link>
 						<Link
-							href="/users"
-							className={url == "/users" ? "font-semibold" : ""}
+							href="/countries"
+							className={url == "/countries" ? "font-semibold" : ""}
 						>
-							Users
+							Countries
 						</Link>
 					</nav>
 				</div>
