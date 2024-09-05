@@ -50,7 +50,7 @@ func main() {
 
 	endpoints := map[string]http.HandlerFunc{
 		"/{$}":       homeHandler,
-		"/countries": usersHandler,
+		"/countries": countriesHandler,
 	}
 
 	for endpoint, f := range endpoints {
@@ -79,7 +79,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func usersHandler(w http.ResponseWriter, r *http.Request) {
+func countriesHandler(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := db.Query("SELECT name FROM countries order by random() limit 5")
 	if err != nil {
