@@ -3,9 +3,9 @@ import Layout from "../../components/Layout";
 
 type Props = {
 	countries: {
-		Name: string,
-		Flag: string,
-	}[]
+		Name: string;
+		Flag: string;
+	}[];
 };
 
 export default function Home(props: Props) {
@@ -13,8 +13,10 @@ export default function Home(props: Props) {
 		<Layout>
 			<div className="py-6 text-lg">
 				<ul>
-					{props.countries.map(c => (
-						<li key={c.Name}>{c.Flag} {c.Name}</li>
+					{props.countries.map((c) => (
+						<li key={c.Name}>
+							{c.Flag} {c.Name}
+						</li>
 					))}
 				</ul>
 			</div>

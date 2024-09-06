@@ -18,6 +18,9 @@ export default function Layout(props: { children: React.ReactNode }) {
 						>
 							Random Countries
 						</Link>
+						<Link href="/all" className={url == "/all" ? "font-semibold" : ""}>
+							All Countries
+						</Link>
 					</nav>
 				</div>
 			</header>
