@@ -52,10 +52,10 @@ func main() {
 	}
 
 	endpoints := map[string]http.HandlerFunc{
-		"/{$}":       homeHandler,
-		"/random":    randomCountriesHandler,
-		"/all":       allCountriesHandler,
-		"/countries": newCountriesHandler,
+		"/{$}":            homeHandler,
+		"/random":         randomCountriesHandler,
+		"/all":            allCountriesHandler,
+		"POST /countries": newCountriesHandler,
 	}
 
 	for endpoint, f := range endpoints {
