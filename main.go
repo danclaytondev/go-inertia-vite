@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/olivere/vite"
@@ -34,6 +35,7 @@ func main() {
 	}
 
 	i, err = inertia.NewFromFile("frontend/index.tmpl")
+
 	if err != nil {
 		panic(err)
 	}
@@ -79,24 +81,33 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type Country struct {
+	Name string
+	Flag string
+}
+
 func countriesHandler(w http.ResponseWriter, r *http.Request) {
 
-	rows, err := db.Query("SELECT name FROM countries order by random() limit 5")
+	rows, err := db.Query("SELECT name, alpha2 FROM countries order by random() limit 10")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 
-	countries := make([]string, 5)
+	countries := make([]Country, 10)
 
 	index := 0
 
 	for rows.Next() {
-		var name string
-		if err := rows.Scan(&name); err != nil {
+		country := Country{}
+		var alpha2 string
+		if err := rows.Scan(&country.Name, &alpha2); err != nil {
 			log.Fatal(err)
 		}
-		countries[index] = name
+
+		country.Flag = country2flag(alpha2)
+
+		countries[index] = country
 		index = index + 1
 	}
 	if err := rows.Err(); err != nil {
@@ -113,4 +124,13 @@ func countriesHandler(w http.ResponseWriter, r *http.Request) {
 
 func serverStaticFolder(mux *http.ServeMux, path string, fs fs.FS) {
 	mux.Handle(path, http.StripPrefix(path, http.FileServerFS(fs)))
+}
+
+func country2flag(countryCode string) string {
+	var flagEmoji strings.Builder
+	countryCode = strings.ToUpper(countryCode)
+	for _, char := range countryCode {
+		flagEmoji.WriteRune(rune(char) + 0x1F1A5)
+	}
+	return flagEmoji.String()
 }
