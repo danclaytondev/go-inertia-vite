@@ -13,10 +13,10 @@ export default function Layout(props: { children: React.ReactNode }) {
 							Home
 						</Link>
 						<Link
-							href="/countries"
-							className={url == "/countries" ? "font-semibold" : ""}
+							href="/random"
+							className={url == "/random" ? "font-semibold" : ""}
 						>
-							Countries
+							Random Countries
 						</Link>
 					</nav>
 				</div>

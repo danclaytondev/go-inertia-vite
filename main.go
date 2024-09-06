@@ -51,8 +51,8 @@ func main() {
 	}
 
 	endpoints := map[string]http.HandlerFunc{
-		"/{$}":       homeHandler,
-		"/countries": countriesHandler,
+		"/{$}":    homeHandler,
+		"/random": randomCountriesHandler,
 	}
 
 	for endpoint, f := range endpoints {
@@ -86,7 +86,7 @@ type Country struct {
 	Flag string
 }
 
-func countriesHandler(w http.ResponseWriter, r *http.Request) {
+func randomCountriesHandler(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := db.Query("SELECT name, alpha2 FROM countries order by random() limit 10")
 	if err != nil {
@@ -114,7 +114,7 @@ func countriesHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	err = i.Render(w, r, "Countries/Index", inertia.Props{
+	err = i.Render(w, r, "Countries/Random", inertia.Props{
 		"countries": countries,
 	})
 	if err != nil {
