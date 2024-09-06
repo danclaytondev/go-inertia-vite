@@ -1,5 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import Layout from "../../components/Layout";
+import { router } from "@inertiajs/react";
 
 type Props = {
 	countries: {
@@ -19,6 +20,14 @@ export default function Home(props: Props) {
 						</li>
 					))}
 				</ul>
+				<div>
+					<button
+						className="block bg-purple-600 text-white text-sm font-medium rounded-sm px-4 py-2 mt-2"
+						onClick={() => router.reload()}
+					>
+						Refresh
+					</button>
+				</div>
 			</div>
 		</Layout>
 	);
